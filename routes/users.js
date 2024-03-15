@@ -8,9 +8,25 @@ app.get('/users', (req, res)=>{
     res.send('My Family')
 }) //get all users
 
-app.post('/user', (req, res)=>{
-    res.send('Add a family member')
-})//add a user
+//POST new user
+app.post('/api/users', (req, res)=>{
+    if(req.body.name && req.body.relationship){
+        if(users.find((n)=> n.name == req.body.name)){
+            res.json({error: `Family member already exists: ${n.name}`})
+            return
+        }
+        const newUser = {
+            id: users[users.length -1].id + 1, //increase ids in sequential order
+            name: req.body.name,
+            relationship: req.body.relationship
+        }
+        users.push(newUser)
+        res.json(users[users.length-1])
+    }else {
+        res.json({error: "Insuffient Data"})
+    }
+
+})
 
 //DELETE User
 app.delete("/api/users/:id", (req, res) => {

@@ -3,7 +3,9 @@ const app = express()
 const router = express.Router()
 const bodyParser = require("body-parser")
 
-//Task Routes
+//TASK ROUTES
+
+//GET all tasks
 app.get('/api/tasks', (req, res)=>{
     res.send('Chores')
 }) //get all tasks
@@ -60,8 +62,60 @@ router
     }) //get task by id)
     .delete((req, res)=>{
         res.send(`Removed task: ${req.params.title}`)
-    }) //delete task by id)
+    }); //delete task by id)
 
+
+//COMMENT ROUTES
+
+//GET all Comments by Task ID
+app.get('/tasks/:id/comments', (req, res)=>{
+    const taskId = req.params.id;
+    const task = tasks.find(task => task.id === taskId);
+
+    if (task && task.comments) {
+        res.json(task.comments);
+    } else {
+        res.status(404).json({ message: "Task not found or no comments available" });
+    }
+})
+
+//POST comment  by Task ID
+app.post("/tasks/:id/comments", (req, res) => {
+    const taskId = req.params.id;
+    const newComment = req.body.comment; 
+
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+
+    if (taskIndex !== -1) {
+        tasks[taskIndex].comments.push(newComment);
+        
+        res.json(tasks[taskIndex]);
+    } else {
+        res.status(404).json({ message: "Task not found" });
+    }
+});    
+
+//DELETE comment by Task ID
+app.delete("/tasks/:taskId/comments/:commentId", (req, res) => {
+    const taskId = req.params.taskId;
+    const commentId = req.params.commentId;
+
+    const task = tasks.find(task => task.id === taskId);
+
+    if (task) {
+        const commentIndex = task.comments.findIndex(comment => comment.id === commentId);
+        
+        if (commentIndex !== -1) {
+            task.comments.splice(commentIndex, 1);
+
+            res.json(task);
+        } else {
+            res.status(404).json({ message: "Comment not found" });
+        }
+    } else {
+        res.status(404).json({ message: "Task not found" });
+    }
+});
 
 
 
