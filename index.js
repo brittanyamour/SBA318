@@ -7,6 +7,7 @@ const bodyParser = require("body-parser")
 const expressRoutes = require("./routes/expressRoutes")
 const userRoutes = require("./routes/users")
 const taskRoutes = require("./routes/tasks")
+const commentRoutes = require("./routes/comments")
 
 //Define the engine
 
@@ -15,6 +16,10 @@ const taskRoutes = require("./routes/tasks")
 
 
 //Middleware
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({extended: true}))
+
+
 app.use(cookieParser()); //third party middleware
 const logReq = function(req, res, next) {
     console.log('request recieved');
