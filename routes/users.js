@@ -12,9 +12,18 @@ app.post('/user', (req, res)=>{
     res.send('Add a family member')
 })//add a user
 
-app.delete('/user', (req, res)=>{
-    res.delete('Remove a family member')
-})//delete user
+//DELETE User
+app.delete("/api/users/:id", (req, res) => {
+    const user = users.find((u, i) => {
+      if (u.id == req.params.id) {
+        users.splice(i, 1);
+        return true;
+      }
+    });
+  
+    if (user) res.json(user);
+    else next();
+  });
 
 
 //User Route Params
@@ -24,11 +33,17 @@ router
         res.send(`Navigated to user: ${req.params.id}`)
     }) //get user by id)
     .delete((req, res)=>{
-        res.send(`Remove user: ${req.params.id}`)
+        res.send(`Removed user: ${req.params.id}`)
     }) //delete user by id)
-    .post((req, res)=>{
-        res.send(`Navigated to user: ${req.params.id}`)
-    }); //get user by id)
+
+router
+    .route("/user/:name")
+    .get((req, res)=>{
+        res.send(`Navigated to user: ${req.params.name}`)
+    }) //get user by id)
+    .delete((req, res)=>{
+        res.send(`Removed user: ${req.params.name}`)
+    }) //delete user by id)
 
 
 

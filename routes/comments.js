@@ -17,11 +17,6 @@ app.delete('/comment', (req, res)=>{
 })//delete comment
 
 
-//Comment Route Params
-app.get('/comment/:id', (req, res)=>{
-    res.send(`Navigated to comment: ${req.params.id}`)
-}); //get comments by id
-
 
 
 module.exports = router;

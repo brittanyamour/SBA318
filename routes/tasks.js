@@ -8,9 +8,10 @@ app.get('/api/tasks', (req, res)=>{
     res.send('Chores')
 }) //get all tasks
 
+//POST a task
 app.post('/api/tasks', (req, res)=>{
     if(req.body.title && req.body.description){
-        if(users.find((t)=> t.title == req.body.title)){
+        if(tasks.find((t)=> t.title == req.body.title)){
             res.json({error: `Task already exists: ${t.title}`})
             return
         }
@@ -26,17 +27,41 @@ app.post('/api/tasks', (req, res)=>{
         res.json({error: "Insuffient Data"})
     }
 
-})//add a task
+})
 
-app.delete('/task', (req, res)=>{
-    
-})//delete task
+//DELETE Task
+app.delete("/api/tasks/:id", (req, res) => {
+    const task = tasks.find((t, i) => {
+      if (t.id == req.params.id) {
+        tasks.splice(i, 1);
+        return true;
+      }
+    });
+  
+    if (task) res.json(task);
+    else next();
+});
 
 
 //Task Route Params
-app.get('/task/:id', (req, res)=>{
-    res.send(`Navigated to task: ${req.params.id}`)
-}); //get task by id 
+router
+    .route("/tasks/:id")
+    .get((req, res)=>{
+        res.send(`Navigated to task: ${req.params.id}`)
+    }) //get task by id)
+    .delete((req, res)=>{
+        res.send(`Removed task: ${req.params.id}`)
+    }) //delete task by id)
+
+router
+    .route("/tasks/:title")
+    .get((req, res)=>{
+        res.send(`Navigated to task: ${req.params.title}`)
+    }) //get task by id)
+    .delete((req, res)=>{
+        res.send(`Removed task: ${req.params.title}`)
+    }) //delete task by id)
+
 
 
 
