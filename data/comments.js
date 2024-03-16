@@ -73,4 +73,4 @@ const comments = [
     },
   ];
   
-  module.exports = posts;
+  module.exports = comments;

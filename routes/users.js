@@ -3,13 +3,19 @@ const app = express()
 const router = express.Router()
 const bodyParser = require("body-parser")
 
+
+//Middleware
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({extended: true}))
+
+
 //User Routes
-app.get('/users', (req, res)=>{
+router.get('/users', (req, res)=>{
     res.send('My Family')
 }) //get all users
 
 //POST new user
-app.post('/api/users', (req, res)=>{
+router.post('/users', (req, res)=>{
     if(req.body.name && req.body.relationship){
         if(users.find((n)=> n.name == req.body.name)){
             res.json({error: `Family member already exists: ${n.name}`})
@@ -29,7 +35,7 @@ app.post('/api/users', (req, res)=>{
 })
 
 //DELETE User
-app.delete("/api/users/:id", (req, res) => {
+router.delete("/users/:id", (req, res) => {
     const user = users.find((u, i) => {
       if (u.id == req.params.id) {
         users.splice(i, 1);
@@ -60,8 +66,6 @@ router
     .delete((req, res)=>{
         res.send(`Removed user: ${req.params.name}`)
     }) //delete user by id)
-
-
 
 
 

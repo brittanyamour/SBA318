@@ -19,3 +19,5 @@ const tasks = [{
     "description": "Take the dog out for a walk. Don't forget to pooper scoop, and wipe off paws when you return",
     "completed": false,
   }]
+
+  module.exports = tasks;

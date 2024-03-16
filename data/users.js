@@ -23,3 +23,5 @@ const users = [{
     "number_of_tasks": 4,
     "tasks_completed": 0,
   }]
+
+  module.exports = users;

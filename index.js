@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 5501;
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 
@@ -8,7 +8,6 @@ const cookieParser = require("cookie-parser")
 const expressRoutes = require("./routes/expressRoutes")
 const userRoutes = require("./routes/users")
 const taskRoutes = require("./routes/tasks")
-const commentRoutes = require("./routes/comments")
 
 //Define the engine
 
@@ -26,15 +25,15 @@ const logReq = function(req, res, next) {
 }
 
 app.use(logReq);
-app.use('/user', userRoutes);
+app.use('/users', userRoutes);
 app.use("/express", expressRoutes);
 app.use("/tasks", taskRoutes);
-app.use("/comments", commentRoutes);
 
 //Error Handling
-app.get("/*", (req, res) => {
+app.use((req, res, next) => {
     res.status(404);
     res.json({error: `Resource not found`})
+    next();
 })
 
 //Port

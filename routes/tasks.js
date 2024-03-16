@@ -3,15 +3,21 @@ const app = express()
 const router = express.Router()
 const bodyParser = require("body-parser")
 
+
+//Middleware
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({extended: true}))
+
+
 //TASK ROUTES
 
 //GET all tasks
-app.get('/api/tasks', (req, res)=>{
+router.get('/tasks', (req, res)=>{
     res.send('Chores')
 }) //get all tasks
 
 //POST a task
-app.post('/api/tasks', (req, res)=>{
+router.post('/tasks', (req, res)=>{
     if(req.body.title && req.body.description){
         if(tasks.find((t)=> t.title == req.body.title)){
             res.json({error: `Task already exists: ${t.title}`})
@@ -32,7 +38,7 @@ app.post('/api/tasks', (req, res)=>{
 })
 
 //DELETE Task
-app.delete("/api/tasks/:id", (req, res) => {
+router.delete("/tasks/:id", (req, res) => {
     const task = tasks.find((t, i) => {
       if (t.id == req.params.id) {
         tasks.splice(i, 1);
@@ -68,7 +74,7 @@ router
 //COMMENT ROUTES
 
 //GET all Comments by Task ID
-app.get('/tasks/:id/comments', (req, res)=>{
+router.get('/tasks/:id/comments', (req, res)=>{
     const taskId = req.params.id;
     const task = tasks.find(task => task.id === taskId);
 
@@ -80,7 +86,7 @@ app.get('/tasks/:id/comments', (req, res)=>{
 })
 
 //POST comment  by Task ID
-app.post("/tasks/:id/comments", (req, res) => {
+router.post("/tasks/:id/comments", (req, res) => {
     const taskId = req.params.id;
     const newComment = req.body.comment; 
 
@@ -96,7 +102,7 @@ app.post("/tasks/:id/comments", (req, res) => {
 });    
 
 //DELETE comment by Task ID
-app.delete("/tasks/:taskId/comments/:commentId", (req, res) => {
+router.delete("/tasks/:taskId/comments/:commentId", (req, res) => {
     const taskId = req.params.taskId;
     const commentId = req.params.commentId;
 
@@ -116,6 +122,8 @@ app.delete("/tasks/:taskId/comments/:commentId", (req, res) => {
         res.status(404).json({ message: "Task not found" });
     }
 });
+
+
 
 
 
